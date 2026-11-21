@@ -47,9 +47,20 @@
       "disabled": false,
       "autoApprove": [
         "create_payment",
-        "create_payment",
         "check_payment_status"
       ]
+    },
+    "code-analyzer": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "C:/Source/personal/learning-ai/code-analyzer-mcp",
+        "python",
+        "server.py"
+      ],
+      "disabled": false,
+      "autoApprove": []
     }
   }
 }
