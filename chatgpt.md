@@ -1,0 +1,84 @@
+# AI Agent Learning Plan
+
+## Week 1 — Agent Fundamentals
+
+### 1. Building Effective Agents
+- **Read:** [Anthropic — Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)
+- **Focus:** workflows vs agents, agent loops, tools, orchestration
+- **Do:** Classify 5 real engineering tasks as workflow vs agent
+
+### 2. Barry Zhang Talk
+- **Watch:** [How We Build Effective Agents](https://www.youtube.com/watch?v=D7_ipDqhtwk)
+- **Focus:** How agents reason + use tools
+- **Do:** Explain the difference between an LLM and an agent loop
+
+### 3. Use Your Coding Agent
+- Pick a real medium-sized task
+- Run it 3 ways:
+  - Minimal instructions
+  - Detailed instructions
+  - Mostly autonomous
+- Note where/why it succeeds or fails
+
+---
+
+## Week 2 — Context + Tools
+
+### 4. Context Engineering
+- **Read:** [Anthropic — Effective Context Engineering for AI Agents](https://www.anthropic.com/research/effective-context-engineering-for-ai-agents)
+- **Learn:** context window, tool results, retrieval, progressive disclosure, context pollution
+- **Do:** Solve the same task with different amounts/types of context and compare results
+
+### 5. Tool Use / MCP
+- **Read:** [MCP Introduction](https://modelcontextprotocol.io/) + [Anthropic — Writing Effective Tools for AI Agents](https://www.anthropic.com/engineering/writing-tools-for-agents)
+- **Learn:** tools, resources, prompts; tool design and permissions
+- **Do:** Design 5–10 AI-facing tools for a system you know well
+
+### 6. Build a Tiny Agent
+- No framework
+- Give it: `read_file`, `search`, `write_file`, `run_tests`
+- Implement: LLM → tool → result → LLM → ...
+- Have it fix a deliberately broken repo
+
+---
+
+## Week 3 — Evals
+
+### 7. Study Evals
+- **Read:** [Anthropic — Demystifying Evals for AI Agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents)
+- **Learn:** test cases, graders, result vs trajectory evaluation
+
+### 8. Build an Eval Suite
+- Create 10–20 coding tasks for your agent
+- **Measure:**
+  - Success rate
+  - Tests passing
+  - Unnecessary changes
+  - Tool misuse
+
+### 9. Compare Strategies
+- Test different prompts/context
+- Measure rather than judging subjectively
+- Find out what actually improves agent performance
+
+---
+
+## Week 4 — Advanced Agents
+
+### 10. Multi-Agent Systems
+- **Read:** [Anthropic — How We Built Our Multi-Agent Research System](https://www.anthropic.com/research/multi-agent-research-system)
+- **Do:** Build planner → coder → reviewer
+- **Ask:** When does multiple agents actually help?
+
+### 11. Long-Running Agents
+- **Read:** [Anthropic — Effective Harnesses for Long-Running Agents](https://www.anthropic.com/research/effective-harnesses-for-long-running-agents)
+- **Learn:** state, checkpoints, summaries, recovery
+- **Do:** Make your agent stop/resume a multi-step task
+
+### 12. AI-Native SDLC
+- Map your team's current SDLC
+- For each stage ask:
+  - What can agents automate?
+  - What becomes more important?
+  - Where does verification need to happen?
+- Produce your own proposed AI-assisted SDLC
