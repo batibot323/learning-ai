@@ -60,7 +60,9 @@
         "server.py"
       ],
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "list_functions"
+      ]
     }
   }
 }
