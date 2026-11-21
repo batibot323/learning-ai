@@ -198,4 +198,8 @@ Ran into a weird issue where custom agents couldn't be invoked as subagents for 
 
 ---
 
+why is it that it still uses `Set-Content` instead of using the `write_file` tool? i feel insecure having to allow `Set-Content *`
+
+---
+
 *Last updated: Week 4*
