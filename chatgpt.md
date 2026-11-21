@@ -22,7 +22,7 @@
 
 ---
 
-## Week 2 — Context + Tools (in progress)
+## Week 2 — Context + Tools ✅ COMPLETED
 
 ### 4. Context Engineering ✅ (read/learn — observed through daily work)
 - **Read:** [Anthropic — Effective Context Engineering for AI Agents](https://www.anthropic.com/research/effective-context-engineering-for-ai-agents)
@@ -43,15 +43,21 @@
   2. **Azure SQL audit logs** — query using KQL
   3. **GitHub reviewer** — read through PRs/issues needing my review
 
-### 6. Build a Tiny Agent
+### 6. Build a Tiny Agent ✅
 - **Guide:** [exercises/06-build-tiny-agent.md](exercises/06-build-tiny-agent.md)
-- **No framework** — just the core loop
 - **Progression:**
-  1. **Part 1 (30 min):** Single tool (`read_file`) + agent loop
-  2. **Part 2 (30 min):** Add `list_files`, `write_file`
-  3. **Part 3 (1 hour):** Fix a deliberately broken repo
+  1. ✅ **Part 1:** Observed agent loop — `Read → Think → Edit → Done`
+  2. ✅ **Part 2:** Built `code-analyzer-mcp` with `list_functions`, `find_todos`, `count_lines`
+  3. ✅ **Part 3:** Multi-step agent challenge — iterative test fixing
+  4. ✅ **Part 4:** Built custom Kiro agents:
+     - `test-fixer` — fixes failing tests one at a time
+     - `bug-bounty` — charges for bug fixes via DragonPay MCP (goofy!)
+  5. ✅ **Part 5:** Reviewed security-reviewer and doc-writer patterns (read only)
+- **Key learnings:**
+  - Agent = Tools + Permissions + Prompt + Resources
+  - Use `@mcp` + `includeMcpJson: true` to access MCP servers in custom agents
+  - Invoke via `/agent-name` slash commands
 - **Core pattern:** `LLM → Tool Call → Execute → Result → LLM → Done`
-- **Tools:** `read_file`, `list_files`, `write_file`, `run_tests`
 
 ---
 

@@ -1,4 +1,4 @@
-# Exercise 6: Build a Tiny Agent (Kiro Custom Agents)
+# Exercise 6: Build a Tiny Agent (Kiro Custom Agents) ✅ COMPLETED
 
 Build your own specialized agent using Kiro's Custom Agents feature.
 
@@ -8,7 +8,7 @@ Learn how agents work by **actually building one**:
 1. ✅ **Observe** Kiro's agent loop in action (Part 1 - DONE)
 2. ✅ **Extend** capabilities with MCP tools (Part 2 - DONE)
 3. ✅ **Test** multi-step agent behavior (Part 3 - DONE)
-4. 🔲 **Build** your own custom agent (Part 4 - NEW)
+4. ✅ **Build** your own custom agent (Part 4 - DONE)
 
 ---
 
@@ -51,9 +51,31 @@ Agents iterate until the goal is achieved. Tests provide the stop condition.
 
 ---
 
-## Part 4: Build a Custom Agent (NEW)
+## Part 4: Build a Custom Agent ✅ COMPLETED
 
-Now you'll **actually build an agent** — not just observe Kiro, but create your own specialized agent with custom tools, permissions, and behavior.
+We **actually built agents** — not just observed Kiro, but created specialized agents with custom tools, permissions, and behavior.
+
+### What We Built
+
+**1. test-fixer agent** (`.kiro/agents/test-fixer.md`)
+- Fixes failing tests one at a time
+- Auto-runs pytest, auto-writes .py files
+- Iterates: run tests → fix → verify → repeat
+
+**2. bug-bounty agent** (`.kiro/agents/bug-bounty.md`)
+- Goofy agent that charges for bug fixes
+- Uses DragonPay MCP to create payment requests
+- 1 line of code = 1 peso
+- Demonstrates using `@mcp` tools with `includeMcpJson: true`
+
+### Key Learnings from Part 4
+
+| What We Learned | Example |
+|-----------------|---------|
+| Agent file structure | Frontmatter (YAML) + Prompt (Markdown) |
+| Using MCP in agents | `tools: ["@mcp"]` + `includeMcpJson: true` |
+| Invoking as subagent | `/agent-name` slash commands |
+| Permissions | Auto-approve specific shell commands |
 
 ### What is a Kiro Custom Agent?
 
@@ -154,9 +176,14 @@ Watch your custom agent:
 
 ---
 
-## Part 5: Advanced — Agent Variations (Optional)
+## Part 5: Advanced — Agent Variations (SKIPPED - Read Only)
 
-Try creating more specialized agents:
+Reviewed the patterns but skipped hands-on. Key takeaways:
+
+- **Security Reviewer**: read-only agent, reports but doesn't modify
+- **Documentation Agent**: write access only to .md files
+
+These show how permissions shape agent behavior.
 
 ### Security Reviewer Agent
 
@@ -249,9 +276,9 @@ This is **agent building** — defining what an agent can do, how it should beha
 
 ---
 
-## Next Steps
+## Next Steps ✅ COMPLETED
 
-- [ ] Create the test-fixer agent
-- [ ] Test it on broken-repo
-- [ ] Create a second specialized agent
-- [ ] Try combining agents with MCP tools you built
+- [x] Create the test-fixer agent
+- [x] Test it on broken-repo
+- [x] Create a second specialized agent (bug-bounty with DragonPay MCP)
+- [x] Try combining agents with MCP tools you built
