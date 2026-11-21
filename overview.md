@@ -18,11 +18,18 @@ I'm not starting from zero — I use coding agents regularly and have intuitions
 
 **Not in scope:** ML fundamentals, training models, fine-tuning, research-level AI safety. I'm focused on the applied/engineering side.
 
+## Constraints
+
+- **Can read Anthropic blogs** — their engineering content is excellent and directly applicable
+- **Can only run Kiro IDE** — no access to Claude Code, so hands-on exercises need to work within Kiro's tooling (MCP servers, hooks, steering files, etc.)
+
+This means some exercises designed for Claude Code need adaptation — but Kiro supports MCP natively, so tool design and context engineering exercises translate well.
+
 ## How I Learn
 
 - **Read first.** Primary sources (Anthropic engineering blog, official docs) over summaries and hot takes.
 - **Watch selectively.** Conference talks and practitioner deep-dives, not hype content.
-- **Build to understand.** Small experiments to test my mental models.
+- **Build to understand.** Small experiments to test my mental models — adapted to work in Kiro.
 - **Measure, don't vibe.** When comparing approaches, use evals not gut feel.
 
 **Cadence:** 1–2 weeks intensive. Weekday evenings for reading/watching, weekends for whole-day hands-on exercises.

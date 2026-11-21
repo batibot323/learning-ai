@@ -1,18 +1,18 @@
 # AI Agent Learning Plan
 
-## Week 1 — Agent Fundamentals
+## Week 1 — Agent Fundamentals ✅
 
-### 1. Building Effective Agents
+### 1. Building Effective Agents ✅
 - **Read:** [Anthropic — Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)
 - **Focus:** workflows vs agents, agent loops, tools, orchestration
 - **Do:** Classify 5 real engineering tasks as workflow vs agent
 
-### 2. Barry Zhang Talk
+### 2. Barry Zhang Talk ✅
 - **Watch:** [How We Build Effective Agents](https://www.youtube.com/watch?v=D7_ipDqhtwk)
 - **Focus:** How agents reason + use tools
 - **Do:** Explain the difference between an LLM and an agent loop
 
-### 3. Use Your Coding Agent
+### 3. Use Your Coding Agent ✅
 - Pick a real medium-sized task
 - Run it 3 ways:
   - Minimal instructions
@@ -22,9 +22,9 @@
 
 ---
 
-## Week 2 — Context + Tools
+## Week 2 — Context + Tools (in progress)
 
-### 4. Context Engineering
+### 4. Context Engineering ✅ (read/learn — observed through daily work)
 - **Read:** [Anthropic — Effective Context Engineering for AI Agents](https://www.anthropic.com/research/effective-context-engineering-for-ai-agents)
 - **Learn:** context window, tool results, retrieval, progressive disclosure, context pollution
 - **Do:** Solve the same task with different amounts/types of context and compare results

@@ -1,0 +1,33 @@
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"],
+      "env": {},
+      "disabled": false,
+      "autoApprove": ["fetch"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:/Source/personal/learning-ai"
+      ],
+      "disabled": false,
+      "autoApprove": ["list_directory"]
+    },
+    "time-tools": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "C:/Source/personal/learning-ai/my-mcp-server",
+        "python",
+        "server.py"
+      ],
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
