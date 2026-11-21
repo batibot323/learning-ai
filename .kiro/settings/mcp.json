@@ -2,10 +2,14 @@
   "mcpServers": {
     "fetch": {
       "command": "uvx",
-      "args": ["mcp-server-fetch"],
+      "args": [
+        "mcp-server-fetch"
+      ],
       "env": {},
       "disabled": false,
-      "autoApprove": ["fetch"]
+      "autoApprove": [
+        "fetch"
+      ]
     },
     "filesystem": {
       "command": "npx",
@@ -15,7 +19,9 @@
         "C:/Source/personal/learning-ai"
       ],
       "disabled": false,
-      "autoApprove": ["list_directory"]
+      "autoApprove": [
+        "list_directory"
+      ]
     },
     "time-tools": {
       "command": "uv",
@@ -27,7 +33,9 @@
         "server.py"
       ],
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "get_current_time"
+      ]
     }
   }
 }
