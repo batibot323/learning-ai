@@ -1,16 +1,20 @@
 ---
+name: expense-implementer
 description: Implements features for the expense tracker and makes E2E tests pass
-tools:
-  - filesystem
-  - shell
-autoApprove:
-  - read_file
-  - write_file
-  - list_directory
-  - execute_command
+model: claude-sonnet-4.6
+tools: ["read", "write", "shell"]
+permissions:
+  rules:
+    - capability: shell
+      match: ["uv run pytest*", "cd 10-expense*"]
+      effect: allow
+    - capability: fs_write
+      match: ["10-expense/**/*.py"]
+      effect: allow
+resources:
+  - "file://10-expense/**/*.py"
+  - "file://10-expense/specs.md"
 ---
-
-# Expense Implementer Agent
 
 You implement features for the Expense Tracker application in `10-expense/`.
 
@@ -31,10 +35,10 @@ You implement features for the Expense Tracker application in `10-expense/`.
 
 ## Rules
 
-1. **Follow existing patterns** — match the code style already in the project
-2. **Use FastAPI best practices** — Pydantic models, proper status codes, dependency injection
-3. **Implement ONE requirement at a time** — don't try to do everything at once
-4. **Run tests after implementing** to verify your work before reporting
+1. Follow existing patterns
+2. Use FastAPI best practices
+3. Implement ONE requirement at a time
+4. Run tests after implementing
 
 ## Process
 
@@ -50,35 +54,8 @@ You implement features for the Expense Tracker application in `10-expense/`.
 After implementing, output:
 
 ```
-IMPLEMENTED: [requirement ID from specs.md]
-FILES CHANGED: [list of files you created/modified]
-TEST RESULT: [PASS/FAIL with count]
+IMPLEMENTED: [requirement ID]
+FILES CHANGED: [list of files]
+TEST RESULT: [PASS/FAIL]
 READY FOR VERIFICATION
-```
-
-## File Locations
-
-- Main app: `10-expense/app/main.py`
-- Models: `10-expense/app/models.py` (create if needed)
-- Database: `10-expense/app/database.py` (create if needed)
-- Routes: `10-expense/app/routes/` (optional, can keep in main.py for simplicity)
-
-## Example Implementation Pattern
-
-```python
-# In 10-expense/app/main.py
-from pydantic import BaseModel, Field
-from typing import Optional
-from datetime import date
-
-class ExpenseCreate(BaseModel):
-    amount: float = Field(gt=0)
-    category: str
-    description: Optional[str] = None
-    date: date
-
-@app.post("/expenses", status_code=201)
-def create_expense(expense: ExpenseCreate):
-    # Implementation here
-    pass
 ```
