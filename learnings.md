@@ -124,6 +124,32 @@ Why it works:
 
 **Watch out for "early victory"**: Verifier runs one test, sees pass, declares success. Mitigate with explicit instructions: "You MUST run the complete test suite."
 
+### Why Planner → Coder → Tester Multi-Agent is NOT Recommended
+
+Anthropic explicitly warns against splitting work by **problem type** (plan, implement, test, review). This is the "telephone game" problem.
+
+**Why it fails for coding:**
+- **Tester loses implementation context** — doesn't know *why* code was written that way, misses edge cases the coder was aware of
+- **Coder loses design context** — doesn't know *why* certain decisions were made in the design phase
+- **Each handoff loses information** — by the time it reaches the reviewer, critical context is gone
+- **Sequential dependency** — can't parallelize because each step depends on the previous
+
+**The better approach:**
+- Keep design + implementation + testing in the **same agent** (has full context)
+- Use subagents only for **truly independent** subtasks (e.g., research different topics in parallel)
+- Verification subagent works because it's **blackbox** — explicitly doesn't need implementation context
+
+**Rule of thumb:** If the next agent needs to understand what the previous agent did to do its job well, they should be the same agent.
+
+| Split Type | Works? | Why |
+|------------|--------|-----|
+| Planner → Coder | ❌ | Coder needs to understand design rationale |
+| Coder → Tester | ❌ | Tester should know what edge cases coder considered |
+| Researcher A ‖ Researcher B | ✅ | Independent topics, no shared context needed |
+| Implementer → Verifier (blackbox) | ✅ | Verifier explicitly doesn't need implementation context |
+
+**My exercise (10-expense) uses implementer/verifier split as a learning exercise**, but I now understand this is the *exception* because verification is deliberately blackbox. For most coding work, a single agent with full context is better. Can explore more effective multi-agent systems for software next time, an Investigation agent to mix in with the Coding agent comes to mind. 
+
 ### Conformity Problem (Frontier Research)
 
 Agents are "low variance" — they make similar decisions:
