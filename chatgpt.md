@@ -90,9 +90,27 @@
 ## Week 4 — Advanced Agents
 
 ### 10. Multi-Agent Systems
-- **Read:** [Anthropic — How We Built Our Multi-Agent Research System](https://www.anthropic.com/research/multi-agent-research-system)
-- **Do:** Build planner → coder → reviewer
-- **Ask:** When does multiple agents actually help?
+- **Read:** [Anthropic — How We Built Our Multi-Agent Research System](https://www.anthropic.com/research/multi-agent-research-system) ✅
+- **Also read:** [When to use multi-agent systems](https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them) ✅
+- **Also read:** [Patterns and problems in multiagent systems](https://www.anthropic.com/research/multiagent-systems) ✅
+- **Ask:** When does multiple agents actually help? ✅ (see learnings.md)
+- **Do:** Build verification subagent with E2E testing
+- **Key concepts learned:**
+  - Orchestrator-subagent pattern (lead agent spawns parallel workers)
+  - 3 scenarios where multi-agent wins: context pollution, parallelization, specialization
+  - Context-centric decomposition > problem-centric decomposition
+  - Verification subagent pattern (blackbox testing, minimal context transfer)
+  - Multi-agent uses 3-15x more tokens than single agent
+  - Token usage explains 80% of performance variance
+  - Conformity problem: agents make similar decisions, can cause systemic failures
+  - "Early victory problem": verifiers declare success too soon
+
+**Exercise: E2E UAT Verification Agent**
+- Build a simple MVP app
+- Write integration tests (human verifies)
+- Agent implements features from specs
+- Verification subagent runs E2E tests after each change
+- Goal: learn verification subagent pattern with real blackbox testing
 
 ### 11. Long-Running Agents
 - **Read:** [Anthropic — Effective Harnesses for Long-Running Agents](https://www.anthropic.com/research/effective-harnesses-for-long-running-agents)
