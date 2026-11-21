@@ -1,6 +1,6 @@
 # math_utils.py
 def add(a, b):
-    return a - b  # BUG: wrong operator
+    return a + b
 
 def divide(a, b):
     return a / b  # BUG: no zero check
