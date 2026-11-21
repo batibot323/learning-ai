@@ -1,11 +1,6 @@
 # math_utils.py
 def add(a, b):
-    return a + b
+    return a - b  # BUG: wrong operator
 
 def divide(a, b):
-    if b == 0:
-        raise ValueError("Cannot divide by zero")
-    return a / b
-
-def average(numbers):
-    return sum(numbers) / len(numbers)
+    return a / b  # BUG: no zero check

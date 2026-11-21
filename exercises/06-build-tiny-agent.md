@@ -1,265 +1,208 @@
-# Exercise 6: Build a Tiny Agent (Kiro IDE)
+# Exercise 6: Build a Tiny Agent (Kiro Custom Agents)
 
-Understand the **agent loop** by observing and extending Kiro's behavior — no raw API calls needed.
+Build your own specialized agent using Kiro's Custom Agents feature.
 
 ## Goal
 
-Learn how agents work by:
-1. **Observing** Kiro's agent loop in action
-2. **Building tools** (MCP servers) that Kiro uses
-3. **Designing tasks** that exercise multi-step agent behavior
+Learn how agents work by **actually building one**:
+1. ✅ **Observe** Kiro's agent loop in action (Part 1 - DONE)
+2. ✅ **Extend** capabilities with MCP tools (Part 2 - DONE)
+3. ✅ **Test** multi-step agent behavior (Part 3 - DONE)
+4. 🔲 **Build** your own custom agent (Part 4 - NEW)
 
 ---
 
-## Part 1: Observe the Agent Loop (20 min)
+## Part 1: Observe the Agent Loop ✅ COMPLETED
 
-### The Core Pattern
+### What We Did
+- Created `agent-test/calculator.py` with a bug
+- Asked Kiro to fix it
+- Observed the agent loop: Read → Think → Edit → Done
 
-Every AI agent follows this loop:
-```
-User Task → LLM thinks → Tool Call → Execute → Result → LLM thinks → ... → Done
-```
+### Key Insight
+The agent loop is: `Task → LLM thinks → Tool Call → Execute → Result → LLM thinks → ... → Done`
 
-Kiro does this automatically. Let's observe it.
+---
 
-### Exercise: Watch Kiro Work
+## Part 2: Extend Kiro with Custom Tools ✅ COMPLETED
 
-1. Create a simple broken file:
+### What We Did
+- Built `code-analyzer-mcp` with 3 tools:
+  - `list_functions` — lists functions in a Python file
+  - `find_todos` — finds TODO comments
+  - `count_lines` — counts lines of code
+- Connected it to Kiro via `mcp.json`
+- Tested: "List all functions in calculator.py" → worked!
+
+### Key Insight
+MCP tools extend what an agent can do. You define **what** the tool does; the agent decides **when** to use it.
+
+---
+
+## Part 3: Multi-Step Agent Challenge ✅ COMPLETED
+
+### What We Did
+- Created `broken-repo/` with buggy `math_utils.py` and `test_math.py`
+- Asked Kiro to fix tests one by one
+- Watched the iterative loop: Run tests → Fix → Verify → Repeat
+
+### Key Insight
+Agents iterate until the goal is achieved. Tests provide the stop condition.
+
+---
+
+## Part 4: Build a Custom Agent (NEW)
+
+Now you'll **actually build an agent** — not just observe Kiro, but create your own specialized agent with custom tools, permissions, and behavior.
+
+### What is a Kiro Custom Agent?
+
+A custom agent is a configuration file that defines:
+- **Tools** — what the agent can do
+- **Permissions** — what it's allowed to do automatically
+- **Prompt** — how it should behave
+- **Resources** — what context it automatically includes
+
+### Step 1: Create the Agent File
+
+Create `.kiro/agents/test-fixer.md`:
 
 ```powershell
-# In Kiro terminal
-mkdir c:\Source\personal\learning-ai\agent-test
-cd c:\Source\personal\learning-ai\agent-test
+mkdir .kiro\agents
 ```
 
-2. Create `calculator.py` with a bug:
+Then create the file with this content:
+
+```markdown
+---
+name: test-fixer
+description: Fixes failing tests one at a time, verifying each fix
+model: claude-sonnet-4.6
+tools: ["read", "write", "shell"]
+permissions:
+  rules:
+    - capability: shell
+      match: ["uv run pytest*", "python -m pytest*"]
+      effect: allow
+    - capability: fs_write
+      match: ["*.py"]
+      effect: allow
+resources:
+  - "file://broken-repo/**/*.py"
+---
+
+You are a test-fixing agent. Your workflow:
+
+1. Run `uv run pytest -v` to see which tests fail
+2. Read the failing test and the code it tests
+3. Fix ONE bug at a time
+4. Run tests again to verify
+5. Repeat until all tests pass
+
+Rules:
+- Fix only one bug per iteration
+- Always run tests after each fix
+- Explain what you fixed and why
+- Stop when all tests pass
+```
+
+### Step 2: Understand What You Built
+
+| Field | What it does |
+|-------|--------------|
+| `name` | How you'll select this agent |
+| `description` | Shows in agent picker |
+| `model` | Which LLM to use |
+| `tools` | `read`, `write`, `shell` — the capabilities |
+| `permissions` | Auto-approve pytest and .py file writes |
+| `resources` | Auto-include broken-repo files in context |
+| `prompt` | The agent's personality and workflow |
+
+### Step 3: Reset the Broken Repo
+
+First, let's re-break the code so you can test your agent:
+
 ```python
+# broken-repo/math_utils.py
 def add(a, b):
-    return a - b  # BUG: should be +
-
-def multiply(a, b):
-    return a * b
-
-if __name__ == "__main__":
-    print(f"2 + 3 = {add(2, 3)}")  # Will print -1, should be 5
-```
-
-3. Ask Kiro: *"Read calculator.py and fix the bug"*
-
-4. **Observe in chat:**
-   - Kiro reads the file (tool call: `read_file`)
-   - Kiro analyzes the code (LLM thinking)
-   - Kiro edits the file (tool call: `str_replace` or `fs_write`)
-   - Kiro may verify (tool call: read again or run)
-
-**Key insight:** You didn't write the loop — Kiro IS the loop.
-
----
-
-## Part 2: Extend Kiro with Custom Tools (45 min)
-
-Since you can't call raw LLM APIs, extend Kiro's capabilities by building MCP tools it can use.
-
-### Build a "Code Analyzer" MCP Server
-
-This MCP gives Kiro tools to analyze Python code:
-
-```powershell
-mkdir c:\Source\personal\learning-ai\code-analyzer-mcp
-cd c:\Source\personal\learning-ai\code-analyzer-mcp
-uv init
-uv add mcp ast-grep
-```
-
-Create `server.py`:
-```python
-"""
-Code Analyzer MCP Server
-
-Gives Kiro tools to analyze Python code structure.
-"""
-
-import ast
-import os
-from pathlib import Path
-from mcp.server.mcpserver import MCPServer
-
-mcp = MCPServer("code-analyzer")
-
-
-@mcp.tool()
-def list_functions(file_path: str) -> str:
-    """
-    List all function names in a Python file.
-    
-    Use this to understand the structure of a Python file
-    before making changes.
-    
-    Args:
-        file_path: Path to the Python file to analyze
-    """
-    try:
-        with open(file_path, 'r') as f:
-            tree = ast.parse(f.read())
-        
-        functions = []
-        for node in ast.walk(tree):
-            if isinstance(node, ast.FunctionDef):
-                args = [arg.arg for arg in node.args.args]
-                functions.append(f"{node.name}({', '.join(args)})")
-        
-        if not functions:
-            return "No functions found in this file."
-        
-        return "Functions found:\n" + "\n".join(f"- {fn}" for fn in functions)
-    except Exception as e:
-        return f"Error analyzing file: {e}"
-
-
-@mcp.tool()
-def find_todos(directory: str = ".") -> str:
-    """
-    Find all TODO comments in Python files.
-    
-    Use this to discover incomplete work in a codebase.
-    
-    Args:
-        directory: Directory to search (default: current directory)
-    """
-    todos = []
-    
-    for path in Path(directory).rglob("*.py"):
-        try:
-            with open(path, 'r') as f:
-                for i, line in enumerate(f, 1):
-                    if "TODO" in line or "FIXME" in line:
-                        todos.append(f"{path}:{i}: {line.strip()}")
-        except Exception:
-            continue
-    
-    if not todos:
-        return "No TODOs found."
-    
-    return "TODOs found:\n" + "\n".join(todos)
-
-
-@mcp.tool()
-def count_lines(file_path: str) -> str:
-    """
-    Count lines of code, comments, and blanks in a file.
-    
-    Args:
-        file_path: Path to the file to analyze
-    """
-    try:
-        with open(file_path, 'r') as f:
-            lines = f.readlines()
-        
-        total = len(lines)
-        blank = sum(1 for l in lines if not l.strip())
-        comments = sum(1 for l in lines if l.strip().startswith('#'))
-        code = total - blank - comments
-        
-        return f"File: {file_path}\n- Total lines: {total}\n- Code: {code}\n- Comments: {comments}\n- Blank: {blank}"
-    except Exception as e:
-        return f"Error: {e}"
-
-
-if __name__ == "__main__":
-    mcp.run()
-```
-
-### Connect to Kiro
-
-Add to `.kiro/settings/mcp.json`:
-```json
-{
-  "code-analyzer": {
-    "command": "uv",
-    "args": [
-      "run",
-      "--directory",
-      "C:/Source/personal/learning-ai/code-analyzer-mcp",
-      "python",
-      "server.py"
-    ],
-    "disabled": false,
-    "autoApprove": []
-  }
-}
-```
-
-### Test It
-
-Ask Kiro:
-- *"List all functions in calculator.py"*
-- *"Find all TODOs in this project"*
-- *"How many lines of code in server.py?"*
-
-**You've extended the agent's capabilities!**
-
----
-
-## Part 3: Multi-Step Agent Challenge (45 min)
-
-### The Broken Repo Challenge
-
-Create a project with multiple bugs. Challenge Kiro to fix them all.
-
-```powershell
-mkdir c:\Source\personal\learning-ai\broken-repo
-cd c:\Source\personal\learning-ai\broken-repo
-```
-
-Create `math_utils.py`:
-```python
-# math_utils.py
-def add(a, b):
-    return a - b  # BUG 1: wrong operator
+    return a - b  # BUG: wrong operator
 
 def divide(a, b):
-    return a / b  # BUG 2: no zero check
-
-def average(numbers):
-    return sum(numbers) / len(numbers  # BUG 3: syntax error - missing )
+    return a / b  # BUG: no zero check
 ```
 
-Create `test_math.py`:
-```python
-# test_math.py  
-import pytest
-from math_utils import add, divide, average
+### Step 4: Switch to Your Custom Agent
 
-def test_add():
-    assert add(2, 3) == 5
-    assert add(-1, 1) == 0
+1. Look at the bottom of the chat input — you'll see "Default" or similar
+2. Click it to open the agent picker
+3. Select **test-fixer**
+4. Your custom agent is now active!
 
-def test_divide():
-    assert divide(10, 2) == 5
-    assert divide(9, 3) == 3
+### Step 5: Test Your Agent
 
-def test_divide_by_zero():
-    with pytest.raises(ValueError):
-        divide(5, 0)
+Now just say:
 
-def test_average():
-    assert average([1, 2, 3]) == 2.0
-    assert average([10, 20]) == 15.0
+> "Fix the failing tests"
+
+Watch your custom agent:
+1. Automatically run pytest (because of permissions)
+2. Read the test file (because of resources)
+3. Fix bugs one by one
+4. Verify each fix
+
+**You built this behavior!**
+
+---
+
+## Part 5: Advanced — Agent Variations (Optional)
+
+Try creating more specialized agents:
+
+### Security Reviewer Agent
+
+```markdown
+---
+name: security-reviewer
+description: Reviews code for security issues
+model: claude-sonnet-4.6
+tools: ["read"]
+permissions:
+  rules:
+    - capability: fs_read
+      effect: allow
+---
+
+You are a security-focused code reviewer. Look for:
+- SQL injection
+- XSS vulnerabilities  
+- Hardcoded secrets
+- Insecure dependencies
+
+Report issues but DO NOT modify code.
 ```
 
-### Challenge Kiro
+### Documentation Agent
 
-Give Kiro this task:
+```markdown
+---
+name: doc-writer
+description: Generates documentation for code
+model: claude-sonnet-4.6
+tools: ["read", "write"]
+permissions:
+  rules:
+    - capability: fs_write
+      match: ["*.md", "docs/**"]
+      effect: allow
+---
 
-> "Fix all bugs in the broken-repo folder. Run the tests after each fix to verify. The tests should all pass when you're done."
+You write documentation. For each function:
+- Describe what it does
+- Document parameters and return values
+- Provide usage examples
 
-**Watch the agent loop:**
-1. Kiro reads the files
-2. Kiro runs tests → sees failures
-3. Kiro fixes bug 1 → runs tests
-4. Kiro fixes bug 2 → runs tests
-5. Kiro fixes bug 3 → runs tests
-6. All tests pass → done
+Write docs in markdown format.
+```
 
 ---
 
@@ -267,27 +210,48 @@ Give Kiro this task:
 
 | Concept | What You Learned |
 |---------|------------------|
-| **Agent Loop** | `Task → Think → Tool → Result → Think → ... → Done` |
-| **Tools** | MCP servers extend what Kiro can do |
-| **Multi-step** | Agent iterates until the goal is achieved |
-| **Verification** | Running tests is how agents know they're done |
+| **Agent Definition** | Tools + Permissions + Prompt + Resources |
+| **Tools** | What the agent CAN do |
+| **Permissions** | What it can do WITHOUT asking |
+| **Prompt** | How it SHOULD behave |
+| **Resources** | What context it STARTS with |
 
 ---
 
 ## Reflection Questions
 
-1. **How did Kiro decide which tool to use?** (The LLM chooses based on tool descriptions)
-2. **What happens if Kiro's fix doesn't work?** (It sees the error and tries again)
-3. **How is this different from a simple script?** (Agent adapts; script is static)
+1. **What's the difference between MCP tools and agent tools?**
+   - MCP tools = new capabilities you build
+   - Agent tools = which built-in/MCP tools this agent can access
+
+2. **Why are permissions important?**
+   - Without them, agent asks for approval every action
+   - With them, agent can work autonomously
+
+3. **How does the prompt affect behavior?**
+   - Same tools, different prompt = different workflow
+   - The prompt is the agent's "personality"
 
 ---
 
-## What's Missing From Kiro That You'd Build?
+## What You Actually Built
 
-If you WERE building from scratch, you'd need:
-- Tool definitions (JSON schema) ← *You did this in MCP*
-- Agent loop (LLM → tool → result → LLM) ← *Kiro does this*
-- Stop condition (when to finish) ← *Kiro decides*
-- Error handling ← *Kiro retries*
+You didn't just observe an agent — you **configured** one:
 
-**The core insight:** Building an agent is mostly about the loop + good tools. Kiro handles the loop; you focus on tools.
+| Component | You Defined |
+|-----------|-------------|
+| Capabilities | `tools: ["read", "write", "shell"]` |
+| Autonomy | `permissions` for pytest and .py writes |
+| Behavior | Prompt: "Fix one bug at a time" |
+| Context | `resources` pointing to broken-repo |
+
+This is **agent building** — defining what an agent can do, how it should behave, and what it knows about.
+
+---
+
+## Next Steps
+
+- [ ] Create the test-fixer agent
+- [ ] Test it on broken-repo
+- [ ] Create a second specialized agent
+- [ ] Try combining agents with MCP tools you built
