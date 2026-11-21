@@ -1,6 +1,6 @@
 # test_math.py  
 import pytest
-from math_utils import add, divide
+from math_utils import add, divide, average
 
 def test_add():
     assert add(2, 3) == 5
