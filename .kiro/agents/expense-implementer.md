@@ -2,7 +2,10 @@
 name: expense-implementer
 description: Implements features for the expense tracker and makes E2E tests pass
 model: claude-sonnet-4.6
-tools: ["read", "write", "shell"]
+tools:
+  - read
+  - write
+  - shell
 permissions:
   rules:
     - capability: shell
