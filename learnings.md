@@ -177,6 +177,25 @@ Without realizing it, I've been using multi-agent patterns:
 
 My custom agents (`test-fixer`, `bug-bounty`) are single-agent with MCP tools — appropriate for their scope.
 
+### Kiro Subagent Gotcha: Intermittent Availability
+
+Ran into a weird issue where custom agents couldn't be invoked as subagents for a while. The main agent kept saying "I can't invoke custom agents programmatically" — but then suddenly it worked.
+
+**What I observed:**
+- Custom agents were visible in `/agent-name` slash commands
+- But `invoke_sub_agent` tool wasn't listing them as available
+- After some time (and possibly restarting Kiro IDE — not just Reload Window), they appeared
+
+**Lesson learned:**
+- If subagents aren't working, try **fully restarting Kiro IDE** (not just Reload Window)
+- Custom agents need to be properly registered before they appear in the subagent list
+- The agent's `tools` list dynamically updates — sometimes it takes a moment for new agents to show up
+
+**Still unclear:** Exact cause of the delay. Could be:
+- Agent file parsing timing
+- IDE caching
+- Something in the workspace reload process
+
 ---
 
 *Last updated: Week 4*
