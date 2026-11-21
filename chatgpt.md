@@ -63,22 +63,27 @@
 
 ## Week 3 — Evals
 
-### 7. Study Evals
+### 7. Study Evals ✅
 - **Read:** [Anthropic — Demystifying Evals for AI Agents](https://www.anthropic.com/research/demystifying-evals-for-ai-agents)
 - **Learn:** test cases, graders, result vs trajectory evaluation
+- **Key concepts:**
+  - Task, trial, grader, transcript, outcome
+  - Code-based vs model-based vs human graders
+  - pass@k (at least 1 success) vs pass^k (all succeed)
+  - Capability evals (what can it do?) vs regression evals (does it still work?)
+  - 8-step roadmap: start early, unambiguous tasks, balanced sets, robust harness, thoughtful graders, check transcripts, monitor saturation, maintain long-term
 
-### 8. Build an Eval Suite
-- Create 10–20 coding tasks for your agent
-- **Measure:**
-  - Success rate
-  - Tests passing
-  - Unnecessary changes
-  - Tool misuse
+### 8. Build an Eval Suite — DEFERRED
+- **Status:** Skipping hands-on for now
+- **Why:** Not yet building full AI agent bots for users. For internal coding agents, existing tests/CI/PR reviews serve as the eval.
+- **When to revisit:** If/when building AI features for customers or chatbots at scale
+- **Note:** Good knowledge to have — there's a team building AI chatbot, this will be relevant for them
+- **Guide created:** [exercises/08-build-eval-suite.md](exercises/08-build-eval-suite.md) (ready when needed)
 
-### 9. Compare Strategies
-- Test different prompts/context
-- Measure rather than judging subjectively
-- Find out what actually improves agent performance
+### 9. Compare Strategies — DEFERRED
+- **Status:** Skipping hands-on for now
+- **Why:** Depends on having an eval suite first
+- **When to revisit:** After building eval suite if/when needed
 
 ---
 
