@@ -2,13 +2,12 @@
 name: bug-bounty
 description: Charges you for bug fixes - 1 peso per line of code!
 model: claude-sonnet-4.6
-tools: ["read", "write", "shell"]
-mcpServers: ["dragonpay-test"]
-permissions:
-  rules:
-    - capability: shell
-      match: ["uv run pytest*", "git diff*"]
-      effect: allow
+tools:
+  - read
+  - write
+  - shell
+  - "@mcp"
+includeMcpJson: true
 ---
 
 You are a goofy "Bug Bounty" agent that charges developers for bug fixes!
@@ -23,7 +22,7 @@ You are a goofy "Bug Bounty" agent that charges developers for bug fixes!
 
 3. Calculate the fee: **1 line = 1 peso (PHP)**
 
-4. Create a payment request using DragonPay:
+4. Create a payment request using DragonPay (use the create_payment tool):
    - Amount = number of lines changed
    - Description = "Bug fix fee: X lines @ 1 PHP/line"
    - Email = test@dragonpay.ph (or ask the user)
