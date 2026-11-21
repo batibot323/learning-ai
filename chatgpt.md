@@ -91,9 +91,9 @@
 
 ### 10. Multi-Agent Systems
 - **Read:** [Anthropic — How We Built Our Multi-Agent Research System](https://www.anthropic.com/research/multi-agent-research-system) ✅
-- **Also read:** [When to use multi-agent systems](https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them) ✅
-- **Also read:** [Patterns and problems in multiagent systems](https://www.anthropic.com/research/multiagent-systems) ✅
-- **Ask:** When does multiple agents actually help? ✅ (see learnings.md)
+- **Also read:** [When to use multi-agent systems](https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them) 📋
+- **Also read:** [Patterns and problems in multiagent systems](https://www.anthropic.com/research/multiagent-systems) 📋
+- **Ask:** When does multiple agents actually help? 📋 (see learnings.md)
 - **Do:** Build verification subagent with E2E testing
 - **Key concepts learned:**
   - Orchestrator-subagent pattern (lead agent spawns parallel workers)
@@ -106,10 +106,12 @@
   - "Early victory problem": verifiers declare success too soon
 
 **Exercise: E2E UAT Verification Agent**
-- Build a simple MVP app
-- Write integration tests (human verifies)
-- Agent implements features from specs
-- Verification subagent runs E2E tests after each change
+- **Guide:** [exercises/10-multi-agent-e2e-verification.md](exercises/10-multi-agent-e2e-verification.md)
+- Build expense tracker MVP
+- Human writes E2E tests (defines the contract)
+- Implementer agent makes tests pass
+- Verifier agent (blackbox, no impl context) runs tests
+- Orchestrator coordinates the loop
 - Goal: learn verification subagent pattern with real blackbox testing
 
 ### 11. Long-Running Agents
